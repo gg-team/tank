@@ -62,6 +62,8 @@
 		    grant = new createjs.Sprite(ss,"runLeftRight");
 			grant.x = 500;
 			grant.y = 200;
+			grant.regX = 16;
+			grant.regY = 16;
 			// Add Grant to the stage, and add it as a listener to Ticker to get updates each frame.
 			stage.addChild(grant);
 			createjs.Ticker.setFPS(30);
@@ -122,16 +124,20 @@
 			var tempY = grant.y;
 			var tempX = grant.x;
 			grant.rotation = 180;
+			/*
 			grant.x = tempX;
 			grant.y = tempY;
+			*/
 			grant.x -= moveDistance;	
 			
 		}else if (moveRight) {	
 			var tempY = grant.y;
 			var tempX = grant.x;
 			grant.rotation = 0;
+			/*
 			grant.x = tempX;
 			grant.y = tempY;
+			*/
 			grant.x += moveDistance;
 
 			
@@ -139,16 +145,20 @@
 			var tempY = grant.y;
 			var tempX = grant.x;
 			grant.rotation = 270;
+			/*
 			grant.x = tempX;
 			grant.y = tempY;
+			*/
 			grant.y -= moveDistance;
 				
 		}else if(moveDown){
 			var tempY = grant.y;
 			var tempX = grant.x;
 			grant.rotation = 90;
+			/*
 			grant.x = tempX;
 			grant.y = tempY;
+			*/
 			grant.y += moveDistance;
 		}
 		stage.update();

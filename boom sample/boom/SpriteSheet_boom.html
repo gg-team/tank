@@ -3,7 +3,7 @@
 <head>
 	<title>EaselJS: Simple SpriteSheet Example</title>
 
-	<link href="assets/demoStyles.css" rel="stylesheet" type="text/css" />
+	<link href="picture/demoStyles.css" rel="stylesheet" type="text/css" />
 
 	<!-- Note: All core EaselJS classes are listed here: -->
 	<script type="text/javascript" src="../src/createjs/events/Event.js"></script>
@@ -39,11 +39,13 @@
 	<script type="text/javascript">
         var stage;
 		var grant;
-		var xVel = 5;
-		var grantHeight = 88;
-		var grantWidth = 66;
+		var moveDistance = 5;
+		var grantHeight = 32;
+		var grantWidth = 32;
 		var moveLeft = false;
 		var moveRight = false;
+		var moveTop = false;
+		var moveDown = false;
 
 		function init() {
 
@@ -52,15 +54,14 @@
 
 			// Define a spritesheet. Note that this data was exported by Zoë.
 			var ss = new createjs.SpriteSheet({
-					"images": ["picture/boom4.png"],
-					"frames": {"height": 88, "count": 5, "width": 66},
-					"animations": { run: [1,5]}
+					"images": ["picture/tanks.png"],
+					"frames": {"height": 32, "count": 8, "width": 32},
+					"animations": { runLeftRight: [0,7], runTopDown:[]}
 				});
-
-		    grant = new createjs.Sprite(ss,"run");
+			
+		    grant = new createjs.Sprite(ss,"runLeftRight");
 			grant.x = 500;
 			grant.y = 200;
-			console.log("2");
 			// Add Grant to the stage, and add it as a listener to Ticker to get updates each frame.
 			stage.addChild(grant);
 			createjs.Ticker.setFPS(30);
@@ -74,11 +75,12 @@
 				switch (e.keyCode) {
 					case 37:
 						grant.gotoAndPlay("run");
-						console.log(grant.x);
+						console.log(grant.currentFrame.rotation);
 						moveLeft = true;
 						break;
 					case 38:
-						alert('up');
+						grant.gotoAndPlay("run");
+						moveTop = true;
 						break;
 					case 39:
 						grant.gotoAndPlay("run");
@@ -86,7 +88,8 @@
 						console.log(grant.x);
 						break;
 					case 40:
-						alert('down');
+						grant.gotoAndPlay("run");
+						moveDown = true;
 						break;
 				}
 			};
@@ -95,38 +98,59 @@
 					case 37:
 						grant.gotoAndStop(0);
 						moveLeft = false;
+			
 						break;
 					case 38:
-						alert('up');
+						grant.gotoAndStop(0);
+						moveTop = false;
 						break;
 					case 39:
 						grant.gotoAndStop(0);
 						moveRight = false;
+				
 						break;
 					case 40:
-						alert('down');
+						grant.gotoAndStop(0);
+						moveDown = false;
 						break;
 				}
 			};
 			
 	function tick(event) {
 
-		if (moveLeft) {
-			grant.x -= xVel;
-			if (grant.scaleX < 0) {
-				grant.scaleX *= -1;
-				grant.x -= grantWidth;
-			}
-		 }else if (moveRight) {
-			grant.x += xVel;
-			if (grant.scaleX > 0) {
-				grant.scaleX *= -1;
-				grant.x += grantWidth;
-			}
-			}
+		if (moveLeft) {	
+			var tempY = grant.y;
+			var tempX = grant.x;
+			grant.rotation = 180;
+			grant.x = tempX;
+			grant.y = tempY;
+			grant.x -= moveDistance;	
+			
+		}else if (moveRight) {	
+			var tempY = grant.y;
+			var tempX = grant.x;
+			grant.rotation = 0;
+			grant.x = tempX;
+			grant.y = tempY;
+			grant.x += moveDistance;
 
-		
-		
+			
+		}else if(moveTop){
+			var tempY = grant.y;
+			var tempX = grant.x;
+			grant.rotation = 270;
+			grant.x = tempX;
+			grant.y = tempY;
+			grant.y -= moveDistance;
+				
+		}else if(moveDown){
+			var tempY = grant.y;
+			var tempX = grant.x;
+			grant.rotation = 90;
+			grant.x = tempX;
+			grant.y = tempY;
+			grant.y += moveDistance;
+		}
 		stage.update();
 	}		
 	</script>
